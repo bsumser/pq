@@ -17,6 +17,7 @@ def main(argv):
                 if command == "insert":
                     count += 1
         myQueue = pQueue(count);
+    with open(inputFile, 'r') as file_ob:
         for line in file_ob:
             if ' ' in line:
                 command, num = line.split()
