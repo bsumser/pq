@@ -7,10 +7,16 @@ def main(argv):
     # Depending on what the input task was, preform the corresponding function
     # Finally, close your file.
 
-    myQueue = pQueue(5);
 
     inputFile = argv[1]
     with open(inputFile, 'r') as file_ob:
+        for line in file_ob:
+            count = 0
+            if ' ' in line:
+                command, num = line.split()
+                if command == "insert":
+                    count += 1
+        myQueue = pQueue(count);
         for line in file_ob:
             if ' ' in line:
                 command, num = line.split()
