@@ -16,7 +16,12 @@ class pQueue(object):
 
     def isEmpty(self):
         # Return true when the priority queue is empty
-	print("isEmpty called")
+        if self.__myHeap.getLength() != 0:
+            print("Queue is not empty")
+            return False
+        else:
+            print("Queue is empty")
+            return True
     
     def printQueue(self):
         # followed by each element separated by a comma. 
