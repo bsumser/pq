@@ -5,7 +5,6 @@ class MaxHeap(object):
 		self.__MaxSize = size
 		self.__length = 0
 		self.__heap = [0]
-		pass
 
 		''' free helper functions '''
 	def getHeap(self):
@@ -32,10 +31,23 @@ class MaxHeap(object):
 		# the value in n is greater than or equal to the values of its children, 
 		# but your heap must also maintain the correct shape.
 		#print("insert called in MaxHeap")
-		self.__heap.append(data)
 		self.__length += 1
-		self.percUp(self.__length)
-	
+		self.__heap.insert(self.__length, data)
+
+                cur = self.__length
+
+                while(cur != 1):
+                    if (cur % 2) == 0:
+                        #check if parent is less
+                        if data < self.__heap[cur / 2]:
+                            self.__heap[cur / 2], self.__heap[cur] = self.__heap[cur], self.__heap[cur / 2]
+                        else:
+                            cur = 1
+                    elif ((cur - 1) % 2 == 0):
+                        if data < self.__heap[(cur - 1) / 2]:
+                            self.__heap[(cur - 1) / 2], self.__heap[cur] = self.__heap[cur], self.__heap[(cur - 1) / 2]
+                        else:
+                            cur = 1
 	def maximum(self):
 		# return the max value in the heap
 		#print("maximum called in MaxHeap")
@@ -47,8 +59,12 @@ class MaxHeap(object):
 		#print("extractMax called in MaxHeap")
 		if self.__length < 1:
 				print("underflow error")
+
 		maxi = self.__heap[1]
-		self.__heap[1] = self.__heap[self.__length]
+
+
+                #swap first item and last item
+                self.__heap[1] = self.__heap[self.__length]
 		self.__length -= 1
 		self.__heapify(1)
 		print maxi
@@ -57,19 +73,22 @@ class MaxHeap(object):
 	def __heapify(self, i):
 		# helper function for reshaping the array
 		#print("heapify called in MaxHeap")
-		l = i * 2
-		r = (i * 2) + 1
-		if l <= self.__length and self.__heap[l] > self.__heap[i]:
-			largest = l
-		else:
-			largest = i
-		if r <= self.__length and self.__heap[r] > self.__heap[largest]:
-			largest = r
-		if largest != i:
-			temp = self.__heap[i]
-			self.__heap[i] = self.__heap[largest]
-			self.__heap[largest] = temp
-			
+
+                l = 2*i
+                r = 2*i + 1
+
+                if l < self.__length and self.__heap[l] > self.__heap[i]:
+                    heapify = l
+                else:
+                    heapify = i
+                if r < self.__length and self.__heap[r] > self.__heap[heapify]:
+                    heapify = r
+
+                if heapify != i: #one child node is larger, so swap
+                    self.__heap[i], self.__heap[heapify] = self.__heap[heapify], self.__heap[i]
+
+                    #reccursive heapify call
+                    #self.__heapify(heapify)
 
 	''' Optional Private Methods can go after this line '''
 	# If you see yourself using the same ~4 lines of code more than once...
@@ -79,15 +98,16 @@ class MaxHeap(object):
 		return (i-1)/2
 	
 	def printOut(self):
-		print("Currnet queue: "),
-		for item in self.__heap:
+		print("Current queue: "),
+                for item in self.__heap[1:]:
 			print item,
 		print ''
 
 	def percUp(self, i):
-		while i // 2 > 0:
-			if self.__heap[i] < self.__heap[i // 2]:
-				temp = self.__heap[i // 2]
-				self.__heap[i // 2] = self.__heap[i]
-				self.__heap[i] = temp
-			i = i // 2
+            parentIndex = i / 2
+            cur = i
+
+            while (cur > 0 and self.__heap[parentIndex] > self.__heap[cur]):
+                    self.__heap[parentIndex], self.__heap[cur] = self.__heap[cur], self.__heap[parentIndex]
+                    cur = parentIndex
+                    parentIndex = parentIndex / 2
